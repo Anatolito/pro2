@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CatalogService</a> &gt; <a href="index.source.html" class="el_package">business.hub.dto</a> &gt; <span class="el_source">ProductDTO.java</span></div><h1>ProductDTO.java</h1><pre class="source lang-java linenums">package business.hub.dto;
+
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * РљР»Р°СЃСЃ DTO РїСЂРѕРґСѓРєС‚РѕРІ.
+ *
+ * @author Anatoly Zakharov
+ */
+@Getter
+<span class="nc" id="L17">@Setter</span>
+<span class="nc" id="L18">public class ProductDTO {</span>
+
+    /**
+     * РџРѕР»Рµ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°.
+     */
+    @NotBlank(message = &quot;Product name should not be empty&quot;)
+    @Pattern(regexp = &quot;^[a-zA-ZР°-СЏРђ-РЇ0-9\\s]+$&quot;, message = &quot;Product name should contains only letters and digits&quot;)
+    @Size(min = 2, max = 50, message = &quot;Product name should be between 2 and 50 characters &quot;)
+<span class="nc" id="L26">    private String productName;</span>
+
+    /**
+     * РџРѕР»Рµ С†РµРЅР° РїСЂРѕРґСѓРєС‚Р° РІ СЂСѓР±Р»СЏС….
+     */
+    @DecimalMin(value = &quot;0.0&quot;)
+    @Digits(integer = 10, fraction = 2, message = &quot;Number is out of the acceptable&quot;
+            + &quot; range (&lt;10 digits expected&gt;.&lt;2 digits&gt;)&quot;)
+<span class="nc" id="L34">    private double productPrice;</span>
+
+    /**
+     * РџРѕР»Рµ РѕРїРёСЃР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°.
+     */
+    @Size(min = 1, max = 255, message = &quot;Product description should be between&quot;
+            + &quot; 1 and 255 characters &quot;)
+<span class="nc" id="L41">    private String productDescription;</span>
+
+    /**
+     * РџРѕР»Рµ РёР·РіРѕС‚РѕРІРёС‚РµР»СЊ РїСЂРѕРґСѓРєС‚Р°.
+     */
+    @Size(min = 2, max = 50, message = &quot;Product maker should be between 2 and 50 characters &quot;)
+<span class="nc" id="L47">    private String productManufacturer;</span>
+
+    /**
+     * РџРѕР»Рµ РІРµСЃ РїСЂРѕРґСѓРєС‚Р° РІ РєРі.
+     */
+    @DecimalMin(value = &quot;0.0&quot;)
+    @Digits(integer = 4, fraction = 3, message = &quot;Number is out of the acceptable&quot;
+            + &quot; range (&lt;4 digits expected&gt;.&lt;3 digits&gt;)&quot;)
+<span class="nc" id="L55">    private double productWeight;</span>
+
+    /**
+     * РџРѕР»Рµ РѕР±СЉРµРј СѓРїР°РєРѕРІРєРё РїСЂРѕРґСѓРєС‚Р° РІ Рј3.
+     */
+    @DecimalMin(value = &quot;0.0&quot;)
+    @Digits(integer = 2, fraction = 6, message = &quot;Number is out of the acceptable&quot;
+            + &quot; range (&lt;2 digits expected&gt;.&lt;6 digits&gt;)&quot;)
+<span class="nc" id="L63">    private double productVolume;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CatalogService</a> &gt; <a href="index.source.html" class="el_package">business.hub.services</a> &gt; <span class="el_source">ProductServiceImpl.java</span></div><h1>ProductServiceImpl.java</h1><pre class="source lang-java linenums">package business.hub.services;
+import business.hub.models.Product;
+import business.hub.repositories.ProductsRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * РЎРµСЂРІРёСЃРЅС‹Р№ РєР»Р°СЃСЃ РїСЂРѕРґСѓРєС‚РѕРІ.
+ * @author Anatoly Zakharov
+ */
+@Service
+@Transactional(readOnly = true)
+<span class="fc" id="L19">@Slf4j</span>
+public class ProductServiceImpl implements ProductService {
+    private final ProductsRepository productsRepository;
+
+    /**
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ ProductServiceImpl.
+     * @param productsRepositoryParam - {@link ProductsRepository}
+     */
+    @Autowired
+<span class="fc" id="L28">    public ProductServiceImpl(final ProductsRepository productsRepositoryParam) {</span>
+<span class="fc" id="L29">        this.productsRepository = productsRepositoryParam;</span>
+<span class="fc" id="L30">    }</span>
+
+    /**
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ СЃРїРёСЃРєР° РІСЃРµС… РїСЂРѕРґСѓРєС‚РѕРІ.
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ СЃРїРёСЃРѕРє РІСЃРµС… РїСЂРѕРґСѓРєС‚РѕРІ
+     */
+    @Override
+    public List&lt;Product&gt; getAllProducts() {
+<span class="fc" id="L38">        List&lt;Product&gt; products = productsRepository.findAll();</span>
+<span class="fc" id="L39">        log.info(&quot;Get all products: {}&quot;, products);</span>
+<span class="fc" id="L40">        return products;</span>
+
+    }
+
+    /**
+     * Р¤СѓРЅРєС†РёСЏ РїРѕР»СѓС‡РµРЅРёСЏ РїСЂРѕРґСѓРєС‚Р° РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ.
+     * @param id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ
+     * @return РІРѕР·РІСЂР°С‰Р°РµС‚ РїСЂРѕРґСѓРєС‚
+     */
+    @Override
+    public Product getProduct(final int id) {
+<span class="fc" id="L51">        Optional&lt;Product&gt; getProduct = productsRepository.findById(id);</span>
+<span class="fc" id="L52">        log.info(&quot;Get product: {}&quot;, getProduct.orElse(null));</span>
+<span class="fc" id="L53">        return getProduct.orElse(null);</span>
+    }
+
+    /**
+     * РџСЂРѕС†РµРґСѓСЂР° СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°.
+     * @param product - РЅРѕРІС‹Р№ РѕР±СЉРµРєС‚ С‚РёРїР° Product
+     */
+    @Transactional
+    @Override
+    public void saveProduct(final Product product) {
+<span class="fc" id="L63">        enrichProduct(product);</span>
+<span class="fc" id="L64">        Product saved = productsRepository.save(product);</span>
+<span class="fc" id="L65">        log.info(&quot;Success save product: {}&quot;, saved);</span>
+
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * РџСЂРѕС†РµРґСѓСЂР° РёР·РјРµРЅРµРЅРёСЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РїСЂРѕРґСѓРєС‚Р°.
+     * @param id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РёР·РјРµРЅСЏРµРјРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°
+     * @param updateProduct - РѕР±СЉРµРєС‚ С‚РёРїР° Product
+     */
+    @Transactional
+    @Override
+    public void updateProduct(final int id,
+                              final Product updateProduct) {
+<span class="fc" id="L78">        updateProduct.setProductId(id);</span>
+<span class="fc" id="L79">        updateProduct.setCreatedAt(this.getProduct(id).getCreatedAt());</span>
+<span class="fc" id="L80">        updateProduct.setUpdatedAt(LocalDateTime.now());</span>
+<span class="fc" id="L81">        Product updated = productsRepository.save(updateProduct);</span>
+<span class="fc" id="L82">        log.info(&quot;Success update product: {}&quot;, updated);</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * РџСЂРѕС†РµРґСѓСЂР° СѓРґР°Р»РµРЅРёСЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РїСЂРѕРґСѓРєС‚Р°.
+     * @param id - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ СѓРґР°Р»СЏРµРјРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°
+     */
+    @Transactional
+    @Override
+    public void deleteProduct(final int id) {
+<span class="fc" id="L92">        productsRepository.deleteById(id);</span>
+<span class="fc" id="L93">        log.info(&quot;Success delete by id: {}&quot;, id);</span>
+<span class="fc" id="L94">    }</span>
+
+    /**
+     * РџСЂРѕС†РµРґСѓСЂР° РѕРїСЂРµРґРµР»РµРЅРёСЏ РІСЂРµРјРµРЅРё СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°
+     * Рё РёР·РјРµРЅРµРЅРёСЏ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ РїСЂРѕРґСѓРєС‚Р°.
+     * @param  product - РѕР±СЉРµРєС‚ С‚РёРїР° Product
+     */
+    private void enrichProduct(final Product product) {
+<span class="fc" id="L102">        product.setCreatedAt(LocalDateTime.now());</span>
+<span class="fc" id="L103">        product.setUpdatedAt(LocalDateTime.now());</span>
+<span class="fc" id="L104">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

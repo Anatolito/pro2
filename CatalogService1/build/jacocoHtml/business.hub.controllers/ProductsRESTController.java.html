@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductsRESTController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CatalogService</a> &gt; <a href="index.source.html" class="el_package">business.hub.controllers</a> &gt; <span class="el_source">ProductsRESTController.java</span></div><h1>ProductsRESTController.java</h1><pre class="source lang-java linenums">package business.hub.controllers;
+
+import business.hub.dto.ProductDTO;
+import business.hub.models.Product;
+import business.hub.services.ProductServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * REST РєРѕРЅС‚СЂРѕР»Р»РµСЂ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РїСЂРѕРґСѓРєС‚Р°РјРё.
+ * Р­С‚РѕС‚ РєРѕРЅС‚СЂРѕР»Р»РµСЂ РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ HTTP-Р·Р°РїСЂРѕСЃС‹, СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РѕРїРµСЂР°С†РёСЏРјРё CRUD РґР»СЏ РїСЂРѕРґСѓРєС‚РѕРІ.
+ * РџСЂРё РїРµСЂРµС…РѕРґРµ РїРѕ СЂР°Р·Р»РёС‡РЅС‹Рј Р·Р°РїСЂРѕСЃР°Рј РІС‹РїРѕР»РЅСЏСЋС‚СЃСЏ СЃР»РµРґСѓСЋС‰РёРµ РґРµР№СЃС‚РІРёСЏ:
+ * - GET /api/products: РџРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° РІСЃРµС… РїСЂРѕРґСѓРєС‚РѕРІ РІ РІРёРґРµ DTO.
+ * - GET /api/products/{id}: РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєРѕРЅРєСЂРµС‚РЅРѕРј РїСЂРѕРґСѓРєС‚Рµ
+ * РїРѕ РµРіРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ РІ РІРёРґРµ DTO.
+ * - POST /api/products: Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р° РЅР° РѕСЃРЅРѕРІРµ РїСЂРµРґРѕСЃС‚Р°РІР»РµРЅРЅС‹С… РґР°РЅРЅС‹С… РІ С‚РµР»Рµ Р·Р°РїСЂРѕСЃР°.
+ * - PUT /api/products/{id}: Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїСЂРѕРґСѓРєС‚Рµ РїРѕ
+ * РµРіРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ РЅР° РѕСЃРЅРѕРІРµ РїСЂРµРґРѕСЃС‚Р°РІР»РµРЅРЅС‹С… РґР°РЅРЅС‹С… РІ С‚РµР»Рµ Р·Р°РїСЂРѕСЃР°.
+ * - DELETE /api/products/{id}: РЈРґР°Р»РµРЅРёРµ РїСЂРѕРґСѓРєС‚Р° РїРѕ РµРіРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ.
+ */
+@Tag(name = &quot;Main methods&quot;)
+@RestController
+@RequestMapping(&quot;/api/products&quot;)
+public class ProductsRESTController {
+    private final ProductServiceImpl productService;
+    private final ModelMapper modelMapper;
+
+    /**
+     * РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ ProductsRESTController.
+     * @param productServiceParam - {@link ProductServiceImpl}
+     * @param modelMapperParam - {@link ModelMapper}
+     */
+    @Autowired
+    public ProductsRESTController(final ProductServiceImpl productServiceParam,
+<span class="nc" id="L50">                                  final ModelMapper modelMapperParam) {</span>
+<span class="nc" id="L51">        this.productService = productServiceParam;</span>
+<span class="nc" id="L52">        this.modelMapper = modelMapperParam;</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * РџРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° РІСЃРµС… РїСЂРѕРґСѓРєС‚РѕРІ.
+     *
+     * @return СЃРїРёСЃРѕРє DTO РїСЂРѕРґСѓРєС‚РѕРІ
+     */
+    @GetMapping
+    @Operation(
+            summary = &quot;РџРѕР»СѓС‡РµРЅРёРµ СЃРїРёСЃРєР° РїСЂРѕРґСѓРєС‚РѕРІ&quot;,
+            description = &quot;РџРѕР»СѓС‡Р°РµС‚ DTO РїСЂРѕРґСѓРєС‚РѕРІ&quot;
+    )
+    public ResponseEntity&lt;List&lt;ProductDTO&gt;&gt; getAllProducts() {
+<span class="nc" id="L66">        List&lt;ProductDTO&gt; list = productService.getAllProducts().stream().map(this::convertToProductDTO)</span>
+<span class="nc" id="L67">                .collect(Collectors.toList());</span>
+<span class="nc" id="L68">        return ResponseEntity.ok(list);</span>
+    }
+    /**
+     * РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєРѕРЅРєСЂРµС‚РЅРѕРј РїСЂРѕРґСѓРєС‚Рµ РїРѕ РµРіРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ.
+     *
+     * @param id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕРґСѓРєС‚Р°
+     * @return РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕРґСѓРєС‚Рµ РІ РІРёРґРµ DTO
+     */
+    @GetMapping({&quot;/{id}&quot;})
+    public ResponseEntity&lt;ProductDTO&gt; getProduct(final @PathVariable int id) {
+<span class="nc" id="L78">        ProductDTO productDTO = convertToProductDTO(productService.getProduct(id));</span>
+<span class="nc" id="L79">        return ResponseEntity.ok(productDTO);</span>
+    }
+    /**
+     * Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°.
+     *
+     * @param productDTO DTO РЅРѕРІРѕРіРѕ РїСЂРѕРґСѓРєС‚Р°
+     * @return СЃС‚Р°С‚СѓСЃ РѕС‚РІРµС‚Р°: OK, РµСЃР»Рё РїСЂРѕРґСѓРєС‚ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ
+     */
+    @PostMapping
+    public ResponseEntity&lt;HttpStatus&gt; addProduct(final @RequestBody ProductDTO productDTO) {
+<span class="nc" id="L89">        productService.saveProduct(convertToProduct(productDTO));</span>
+<span class="nc" id="L90">        return ResponseEntity.ok(HttpStatus.OK);</span>
+    }
+    /**
+     * Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїСЂРѕРґСѓРєС‚Рµ.
+     *
+     * @param id         РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕРґСѓРєС‚Р°
+     * @param productDTO РЅРѕРІР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕРґСѓРєС‚Рµ РІ РІРёРґРµ DTO
+     * @return СЃС‚Р°С‚СѓСЃ РѕС‚РІРµС‚Р°: OK, РµСЃР»Рё РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕРґСѓРєС‚Рµ СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅР°
+     */
+    @PutMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;HttpStatus&gt; editProduct(final @PathVariable int id,
+                                                  final @RequestBody ProductDTO productDTO) {
+<span class="nc" id="L102">        productService.updateProduct(id, convertToProduct(productDTO));</span>
+<span class="nc" id="L103">        return ResponseEntity.ok(HttpStatus.OK);</span>
+    }
+    /**
+     * РЈРґР°Р»РµРЅРёРµ РїСЂРѕРґСѓРєС‚Р°.
+     *
+     * @param id РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїСЂРѕРґСѓРєС‚Р°
+     * @return СЃС‚Р°С‚СѓСЃ РѕС‚РІРµС‚Р°: OK, РµСЃР»Рё РїСЂРѕРґСѓРєС‚ СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅ
+     */
+    @DeleteMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;HttpStatus&gt; deleteUser(final @PathVariable int id) {
+<span class="nc" id="L113">        productService.deleteProduct(id);</span>
+<span class="nc" id="L114">        return ResponseEntity.ok(HttpStatus.OK);</span>
+    }
+
+    private Product convertToProduct(final ProductDTO productDTO) {
+<span class="nc" id="L118">        return modelMapper.map(productDTO, Product.class);</span>
+    }
+
+    private ProductDTO convertToProductDTO(final Product product) {
+<span class="nc" id="L122">        return modelMapper.map(product, ProductDTO.class);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

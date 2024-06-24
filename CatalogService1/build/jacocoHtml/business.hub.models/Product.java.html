@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Product.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CatalogService</a> &gt; <a href="index.source.html" class="el_package">business.hub.models</a> &gt; <span class="el_source">Product.java</span></div><h1>Product.java</h1><pre class="source lang-java linenums">package business.hub.models;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import java.time.LocalDateTime;
+
+/**
+ * РњРѕРґРµР»СЊРЅС‹Р№ РєР»Р°СЃСЃ РїСЂРѕРґСѓРєС‚РѕРІ.
+ * @author Anatoly Zakharov
+ */
+@Getter
+<span class="fc" id="L27">@Setter</span>
+<span class="fc" id="L28">@NoArgsConstructor</span>
+<span class="nc" id="L29">@AllArgsConstructor</span>
+<span class="fc" id="L30">@ToString</span>
+<span class="pc bpc" id="L31" title="53 of 54 branches missed.">@EqualsAndHashCode</span>
+@Entity
+@Table(name = &quot;products&quot;)
+
+public class Product {
+    /** РџРѕР»Рµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ. */
+    @Id
+    @Column(name = &quot;product_id&quot;)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="fc" id="L40">    private int productId;</span>
+
+    /** РџРѕР»Рµ РЅР°РёРјРµРЅРѕРІР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°. */
+    @NotBlank(message = &quot;Product name should not be empty&quot;)
+    @Pattern(regexp = &quot;^[a-zA-ZР°-СЏРђ-РЇ0-9\\s]+$&quot;,
+            message = &quot;Product name should contains only letters and digits&quot;)
+    @Size(min = 2, max = 50, message = &quot;Product name should be between 2 and 50 characters &quot;)
+    @Column(name = &quot;product_name&quot;)
+<span class="fc" id="L48">    private String productName;</span>
+
+    /** РџРѕР»Рµ С†РµРЅР° РїСЂРѕРґСѓРєС‚Р° РІ СЂСѓР±Р»СЏС…. */
+    @DecimalMin(value = &quot;0.0&quot;)
+    @Digits(integer = 10, fraction = 2,
+            message = &quot;Number is out of the acceptable range (&lt;10 digits expected&gt;.&lt;2 digits&gt;)&quot;)
+    @Column(name = &quot;product_price&quot;)
+<span class="fc" id="L55">    private double productPrice;</span>
+
+    /** РџРѕР»Рµ РѕРїРёСЃР°РЅРёРµ РїСЂРѕРґСѓРєС‚Р°. */
+    @Size(min = 1, max = 255,
+            message = &quot;Product description should be between 1 and 255 characters &quot;)
+    @Column(name = &quot;product_description&quot;)
+<span class="fc" id="L61">    private String productDescription;</span>
+
+    /** РџРѕР»Рµ РёР·РіРѕС‚РѕРІРёС‚РµР»СЊ РїСЂРѕРґСѓРєС‚Р°. */
+    @Size(min = 2, max = 50,
+            message = &quot;Product maker should be between 2 and 50 characters &quot;)
+    @Column(name = &quot;product_manufacturer&quot;)
+<span class="fc" id="L67">    private String productManufacturer;</span>
+
+    /** РџРѕР»Рµ РІРµСЃ РїСЂРѕРґСѓРєС‚Р° РІ РєРі. */
+    @DecimalMin(value = &quot;0.0&quot;)
+    @Digits(integer = 4, fraction = 3,
+            message = &quot;Number is out of the acceptable range (&lt;4 digits expected&gt;.&lt;3 digits&gt;)&quot;)
+    @Column(name = &quot;product_weight&quot;)
+<span class="fc" id="L74">    private double productWeight;</span>
+
+    /** РџРѕР»Рµ РѕР±СЉРµРј СѓРїР°РєРѕРІРєРё РїСЂРѕРґСѓРєС‚Р° РІ Рј3. */
+    @DecimalMin(value = &quot;0.0&quot;)
+    @Digits(integer = 2, fraction = 6,
+            message = &quot;Number is out of the acceptable range (&lt;2 digits expected&gt;.&lt;6 digits&gt;)&quot;)
+    @Column(name = &quot;product_volume&quot;)
+<span class="fc" id="L81">    private double productVolume;</span>
+
+    /** РџРѕР»Рµ РІСЂРµРјСЏ Рё РґР°С‚Р° СЃРѕР·РґР°РЅРёСЏ Р·Р°РїРёСЃРё РїСЂРѕРґСѓРєС‚Р° РІ Р‘Р”. */
+    @Column(name = &quot;product_created_at&quot;)
+<span class="fc" id="L85">    private LocalDateTime createdAt;</span>
+
+    /** РџРѕР»Рµ РІСЂРµРјСЏ Рё РґР°С‚Р° РёР·РјРµРЅРµРЅРёСЏ Р·Р°РїРёСЃРё РїСЂРѕРґСѓРєС‚Р° РІ Р‘Р”. */
+    @Column(name = &quot;product_updated_at&quot;)
+<span class="fc" id="L89">    private LocalDateTime updatedAt;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

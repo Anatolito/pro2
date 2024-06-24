@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="business.hub.CatalogService.CatalogServiceApplicationTests" tests="9" skipped="0" failures="0" errors="0" timestamp="2024-06-03T19:23:45" hostname="ANATOLITO-ASROC" time="1.302">
+  <properties/>
+  <testcase name="getProductTest()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="1.244"/>
+  <testcase name="getAllProductsTestNegativeScenario()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.004"/>
+  <testcase name="getProductTestNegativeScenario()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.003"/>
+  <testcase name="saveProductTestNegativeScenario()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.009"/>
+  <testcase name="saveProductTest()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.014"/>
+  <testcase name="testUpdateProduct()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.004"/>
+  <testcase name="getAllProductsTest()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.01"/>
+  <testcase name="testDeleteProductNegativeScenario()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.003"/>
+  <testcase name="testDeleteProduct()" classname="business.hub.CatalogService.CatalogServiceApplicationTests" time="0.003"/>
+  <system-out><![CDATA[22:23:46.427 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get product: Product(productId=1, productName=null, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=null)
+22:23:46.471 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get all products: []
+22:23:46.476 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get product: null
+22:23:46.491 [Test worker] INFO business.hub.services.ProductServiceImpl -- Success save product: Product(productId=1, productName=Test Product, productPrice=100.0, productDescription=Kekek, productManufacturer=Kek, productWeight=12.0, productVolume=43.0, createdAt=2024-06-03T22:23:46.491347600, updatedAt=2024-06-03T22:23:46.491347600)
+22:23:46.504 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get product: Product(productId=1, productName=null, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=null)
+22:23:46.505 [Test worker] INFO business.hub.services.ProductServiceImpl -- Success update product: Product(productId=1, productName=Update Product, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=2024-06-03T22:23:46.505346900)
+22:23:46.509 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get all products: [Product(productId=0, productName=null, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=null)]
+22:23:46.525 [Test worker] INFO business.hub.services.ProductServiceImpl -- Success delete by id: 1
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,9 @@
+Œ22:23:46.427 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get product: Product(productId=1, productName=null, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=null)
+b22:23:46.471 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get all products: []
+_22:23:46.476 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get product: null
+Ó22:23:46.491 [Test worker] INFO business.hub.services.ProductServiceImpl -- Success save product: Product(productId=1, productName=Test Product, productPrice=100.0, productDescription=Kekek, productManufacturer=Kek, productWeight=12.0, productVolume=43.0, createdAt=2024-06-03T22:23:46.491347600, updatedAt=2024-06-03T22:23:46.491347600)
+Œ22:23:46.504 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get product: Product(productId=1, productName=null, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=null)
+º22:23:46.505 [Test worker] INFO business.hub.services.ProductServiceImpl -- Success update product: Product(productId=1, productName=Update Product, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=2024-06-03T22:23:46.505346900)
+“22:23:46.509 [Test worker] INFO business.hub.services.ProductServiceImpl -- Get all products: [Product(productId=0, productName=null, productPrice=0.0, productDescription=null, productManufacturer=null, productWeight=0.0, productVolume=0.0, createdAt=null, updatedAt=null)]
+
+e22:23:46.525 [Test worker] INFO business.hub.services.ProductServiceImpl -- Success delete by id: 1
